@@ -13,7 +13,7 @@ from matplotlib import  pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def creat_data(n):
+def create_data(n):
     '''
     创建线性可分数据集
 
@@ -38,7 +38,7 @@ def creat_data(n):
     samples=np.vstack([plus_samples,minus_samples]) # 拼接成完整数据集
     np.random.shuffle(samples)  # 混洗数据
     return samples
-def creat_data_no_linear(n):
+def create_data_no_linear(n):
     '''
     创建线性不可分数据集
 
@@ -87,7 +87,7 @@ def run_plot_samples():
     '''
     fig=plt.figure()
     ax=Axes3D(fig)
-    data=creat_data(100) # 产生线性可分数据集
+    data=create_data(100) # 产生线性可分数据集
     plot_samples(ax,data)
     ax.legend(loc='best')
     plt.show()
@@ -98,7 +98,7 @@ def run_plot_samples_no_linear():
 
     :return: None
     '''
-    data=creat_data_no_linear(100)# 产生线性不可分数据集
+    data=create_data_no_linear(100)# 产生线性不可分数据集
     fig=plt.figure()
     ax=Axes3D(fig)
     plot_samples(ax,data)
@@ -114,13 +114,13 @@ def perceptron(train_data,eta,w_0,b_0):
     :param b_0: 初始的 b
     :return: 一个元组，依次为：最终的权重向量，最终的 b 值，迭代次数
      '''
-     x=train_data[:,:-1]  # x 数据
-     y=train_data[:,-1]  #  对应的标记
-     length= train_data.shape[0] #样本集大小
-     w=w_0
-     b=b_0
-     step_num=0
-     while True:
+    x=train_data[:,:-1]  # x 数据
+    y=train_data[:,-1]  #  对应的标记
+    length= train_data.shape[0] #样本集大小
+    w=w_0
+    b=b_0
+    step_num=0
+    while True:
         i=0
         while(i< length): ## 遍历一轮样本集中的所有的样本点
             step_num+=1
@@ -142,7 +142,7 @@ def perceptron(train_data,eta,w_0,b_0):
                 i=i+1
         if(i== length): #没有误分类点，结束循环
             break
-     return (w,b,step_num)
+    return (w,b,step_num)
 def creat_hyperplane(x,y,w,b):
     '''
     创建分离超平面
@@ -160,7 +160,7 @@ def run_perceptron():
 
     :return: None
     '''
-    data=creat_data(100) #产生线性可分数据集
+    data=create_data(100) #产生线性可分数据集
     eta,w_0,b_0=0.1,np.ones((3,1),dtype=float),1 # 初始化 学习率、权重、 b
     w,b,num=perceptron(data,eta,w_0,b_0) # 执行感知机的原始形式
     ### 绘图
@@ -186,10 +186,10 @@ def run_perceptron_no_linear():
 
     :return: None
     '''
-    data=creat_data_no_linear(100)#产生线性不可分数据集
+    data=create_data_no_linear(100)#产生线性不可分数据集
     perceptron(data,eta=0.1,w_0=np.zeros((2,1)),b_0=0)
 
-def creat_w(train_data,alpha):
+def create_w(train_data,alpha):
     '''
     根据训练数据集和 alpha向量 创建 权重向量
 
@@ -226,7 +226,7 @@ def perceptron_dual(train_data,eta,alpha_0,b_0):
             step_num+=1
             x_i=x[i].reshape((x.shape[1],1)) # 变形为列向量，因为需要调用 np.dot
             y_i=y[i]
-            w=creat_w(train_data,alpha)
+            w=create_w(train_data,alpha)
             z=y_i*(np.dot(np.transpose(w),x_i)+b)
             if z <=0: # 该点是误分类点
                 alpha[i][0]+=eta  # 梯度下降
@@ -243,12 +243,12 @@ def run_perceptron_dual():
 
     :return: None
     '''
-    data=creat_data(100)
+    data=create_data(100)
     eta,w_0,b_0=0.1,np.ones((3,1),dtype=float),1
     w_1,b_1,num_1=perceptron(data,eta,w_0,b_0) ##执行原始形式的算法
     alpha,b_2,num_2=perceptron_dual(data,eta=0.1,alpha_0=np.zeros((data.shape[0]*2,1)),
         b_0=0) # 执行对偶形式的算法
-    w_2=creat_w(data,alpha)
+    w_2=create_w(data,alpha)
 
     print("w_1,b_1",w_1,b_1)
     print("w_2,b_2",w_2,b_2)
@@ -303,7 +303,7 @@ def run_test_eta():
     ax=fig.add_subplot(1,1,1)
     ax.set_xlabel(r'$\eta$')
 
-    data=creat_data(20) # 创建线性可分数据集
+    data=create_data(20) # 创建线性可分数据集
     etas=np.linspace(0.01,1,num=25,endpoint=False)
     w_0,b_0,alpha_0=np.ones((3,1)),0,np.zeros((data.shape[0],1))
     test_eta(data,ax,etas,w_0,alpha_0,b_0)
@@ -317,4 +317,3 @@ if __name__=='__main__':
     #run_test_eta()# 执行 run_test_eta
     #run_plot_samples_no_linear()# 执行 run_plot_samples_no_linear
     #run_perceptron_no_linear()# 执行 run_perceptron_no_linear
-
