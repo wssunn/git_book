@@ -56,7 +56,7 @@ def test_AdaBoostRegressor_base_regr(*data):
     X_train,X_test,y_train,y_test=data
     fig=plt.figure()
     regrs=[ensemble.AdaBoostRegressor(), # 基础回归器为默认类型
-		ensemble.AdaBoostRegressor(base_estimator=LinearSVR(epsilon=0.01,C=100))] # 基础回归器为 LinearSVR
+		   ensemble.AdaBoostRegressor(base_estimator=LinearSVR(epsilon=0.01,C=100))] # 基础回归器为 LinearSVR
     labels=["Decision Tree Regressor","Linear SVM Regressor"]
     for i ,regr in enumerate(regrs):
         ax=fig.add_subplot(2,1,i+1)
